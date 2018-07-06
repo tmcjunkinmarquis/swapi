@@ -1,9 +1,11 @@
+export const searchForPeople = () => {
+  console.log('happy in peopleSearch');
+};
 
-
-export const vehicleSearch = () => {
+export const searchForVehicles = () => {
   console.log('happy in vehicleSearch');
-}
+};
 
-export const planetSearch = ()=>{
-  
-}
+export const searchForPlanets = () => {
+  console.log('happy in planetSearch');
+};

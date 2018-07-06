@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
 import { firstFetch } from '../../ApiCall/ApiCall';
-import {vehicleSearch} from './ButtonSearhingHelper'
+import {searchForPeople, searchForPlanets, searchForVehicles} from './ButtonSearhingHelper'
 
 
 import './App.css';
@@ -11,24 +11,30 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      scroll: [],
+      movies: [],
       randomMovieObject: {}
     };
   }
 
-  peopleSearch = () => {
-    console.log('happy in peopleSearch'); 
+  peopleSearch = ()=>{
+    searchForPeople(this.state.movies)
   }
 
   planetSearch = () => {
-    console.log('happy in planetSearch');
+    searchForPlanets(this.state.movies)
+  }
+
+  vehicleSearch = () => {
+    searchForVehicles(this.state.movies)
   }
 
   
 
+  
+
   randomScrollForRefresh = async () => {
-    const scroll = this.state.scroll;
-    var randomMovieObject = scroll[Math.floor(Math.random() * scroll.length)];
+    const movies = this.state.movies;
+    var randomMovieObject = movies[Math.floor(Math.random() * movies.length)];
     await this.setState({
       randomMovieObject:
       {
@@ -41,8 +47,8 @@ class App extends Component {
 
   async componentDidMount() {
     const firstResponse = await firstFetch();
-    const scrollValue = firstResponse.results;
-    await this.setState({ scroll: scrollValue });
+    const movies = firstResponse.results;
+    await this.setState({ movies });
     this.randomScrollForRefresh();
 
   }
@@ -67,7 +73,7 @@ class App extends Component {
           className="button-container"
           peopleSearch={this.peopleSearch}
           planetSearch={this.planetSearch}
-          vehicleSearch={vehicleSearch}
+          vehicleSearch={this.vehicleSearch}
           
           />
 
