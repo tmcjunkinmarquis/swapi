@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Form from '../Form/Form';
+
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
 import { firstFetch } from '../../ApiCall/ApiCall';
@@ -51,7 +51,7 @@ class App extends Component {
             value='View Favorites'
           />fave#
         </div>
-        <Form />
+        
         <ButtonContainer className="button-container" />
 
 
