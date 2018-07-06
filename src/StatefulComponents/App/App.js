@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
-import { firstFetch, fecthForPeople } from '../../ApiCall/ApiCall';
+import { firstFetch, fetchForPeople, fetchForHomeworld } from '../../ApiCall/ApiCall';
 import {searchForPeople, searchForPlanets, searchForVehicles} from './ButtonSearhingHelper'
 import CardContainer from '../../StatelessComponents/CardContainer/CardContainer'
 
@@ -15,13 +15,22 @@ class App extends Component {
       movies: [],
       randomMovieObject: {},
       cards: []
+      
     };
   }
 
   peopleSearch = async ()=>{
     const characterPaths = searchForPeople(this.state)
-    const characters = await fecthForPeople(characterPaths);
+    const characters = await fetchForPeople(characterPaths);
+    // const homeWorld = await fetchForHomeworld(characters)
     this.setState({cards: characters})
+  }
+
+  homeWorldSearch = async (path)=>{
+    // console.log('happy home world search');
+    const home = await fetchForHomeworld(path)
+    // console.log(home.name);
+    const homeWorld = home.name
   }
 
   planetSearch = () => {
@@ -76,7 +85,10 @@ class App extends Component {
           vehicleSearch={this.vehicleSearch}
           />
 
-          <CardContainer cards={this.state.cards}/>
+          <CardContainer
+            cards={this.state.cards}
+            homeWorldSearch={this.homeWorldSearch}/>
+            homeWorld={}
 
 
       </div>

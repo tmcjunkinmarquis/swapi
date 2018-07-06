@@ -1,5 +1,11 @@
 .card {
+  
   height: 150px;
-  width: 100px;
+  width: 150px;
   border: 2px solid pink;
+}
+
+p {
+  color: navy;
+  
 }

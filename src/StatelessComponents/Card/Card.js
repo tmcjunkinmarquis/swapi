@@ -1,13 +1,16 @@
-import React from 'react'
-import './Card.css'
+import React from 'react';
+import './Card.css';
 
 const Card = (props)=>{
+  const { name, homeworldSearch } = props;
+
   return(
     <div className="card">
-      {props.name}
+      <p>{name}</p>
+      <p>{()=>homeworldSearch}</p>
       
     </div>
-  )
-}
+  );
+};
 
 export default Card;

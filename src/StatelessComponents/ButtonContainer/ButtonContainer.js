@@ -5,9 +5,8 @@ export const ButtonContainer = (props)=>{
   
   
   return(
-    <div>I am a button container
+    <div>
       <input 
-
         type="button"
         value="people"
         onClick={peopleSearch}

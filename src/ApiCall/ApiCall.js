@@ -5,15 +5,22 @@ export const firstFetch = () => {
 
 };
 
-export const fecthForPeople = async (characterPaths) => {
+export const fetchForPeople = async (characterPaths) => {
   let answer = [];
   await Promise.all(characterPaths.map(async path =>{
     const response = await fetch(path);
-    const pathy = await response.json();
-    
-    
-    answer.push(pathy);
-    
+    const data = await response.json();
+    answer.push(data);
   }))
+  return answer
+}
+
+export const fetchForHomeworld = (path) => {
+  // console.log('home world', path);
+  let answer;
+  answer = fetch(path)
+  .then (response => response.json())
+  .then (data => data)
+  .catch(error => error.message)
   return answer
 }
