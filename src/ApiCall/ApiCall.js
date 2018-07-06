@@ -11,16 +11,17 @@ export const fetchForPeople = async (characterPaths) => {
     const response = await fetch(path);
     const data = await response.json();
     answer.push(data);
-  }))
-  return answer
-}
+  }));
+  return answer;
+};
 
-export const fetchForHomeworld = (path) => {
-  // console.log('home world', path);
-  let answer;
-  answer = fetch(path)
-  .then (response => response.json())
-  .then (data => data)
-  .catch(error => error.message)
-  return answer
-}
+export const fetchForSpecies = async (path) => {
+  const response = await fetch(path);
+  return await response.json();
+};
+
+//use this fetchForHomeworld as pattern
+export const fetchForHomeworld = async (path) => {
+  const response = await fetch(path);
+  return await response.json();
+};

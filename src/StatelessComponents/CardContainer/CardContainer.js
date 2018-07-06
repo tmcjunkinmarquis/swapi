@@ -3,16 +3,18 @@ import Card from '../Card/Card';
 import './CardContainer.css';
 
 const CardContainer = (props) =>{
-  const { cards, homeWorldSearch } = props;
+  const { characters } = props;
   
   
 
   const makeCards = () => {
-    return cards.map(card =>{
+    return characters.map(character =>{
       return (
         <Card
-          name={card.name}
-          homeworldSearch={homeWorldSearch(card.homeworld)}/>
+          name={character.name}
+          homeworld={character.homeworld}
+          species={character.species}
+          />
       )
     });
   };

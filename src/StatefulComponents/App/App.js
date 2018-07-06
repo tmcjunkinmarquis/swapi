@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
-import { firstFetch, fetchForPeople, fetchForHomeworld } from '../../ApiCall/ApiCall';
-import {searchForPeople, searchForPlanets, searchForVehicles} from './ButtonSearhingHelper'
-import CardContainer from '../../StatelessComponents/CardContainer/CardContainer'
+import { firstFetch, fetchForPeople, fetchForHomeworld, fetchForSpecies } from '../../ApiCall/ApiCall';
+import { searchForPeople, searchForPlanets, searchForVehicles } from './ButtonSearhingHelper';
+import CardContainer from '../../StatelessComponents/CardContainer/CardContainer';
 
 
 import './App.css';
@@ -14,31 +14,43 @@ class App extends Component {
     this.state = {
       movies: [],
       randomMovieObject: {},
-      cards: []
-      
+      cards: [],
+      characters: []
+
     };
   }
 
-  peopleSearch = async ()=>{
-    const characterPaths = searchForPeople(this.state)
+  peopleSearch = async () => {
+    const characterPaths = searchForPeople(this.state);
     const characters = await fetchForPeople(characterPaths);
-    // const homeWorld = await fetchForHomeworld(characters)
-    this.setState({cards: characters})
+    const charactersWithHomeworld = await this.homeWorldSearch(characters);
+    const charactersCompleteWithSpecies = await this.speciesSearch(charactersWithHomeworld);
+    this.setState({ characters: charactersCompleteWithSpecies });
   }
 
-  homeWorldSearch = async (path)=>{
-    // console.log('happy home world search');
-    const home = await fetchForHomeworld(path)
-    // console.log(home.name);
-    const homeWorld = home.name
+  speciesSearch = (characters) => {
+    const unresolvedPromises = characters.map(async character => {
+      const species = await fetchForSpecies(character.species[0]);
+      return { ...character, species };
+    });
+    return Promise.all(unresolvedPromises);
+  }
+
+  //use this homeWorldSearch as pattern
+  homeWorldSearch = (characters) => {
+    const unresolvedPromises = characters.map(async character => {
+      const homeworld = await fetchForHomeworld(character.homeworld);
+      return { ...character, homeworld };
+    });
+    return Promise.all(unresolvedPromises);
   }
 
   planetSearch = () => {
-    searchForPlanets(this.state.movies)
+    searchForPlanets(this.state.movies);
   }
 
   vehicleSearch = () => {
-    searchForVehicles(this.state.movies)
+    searchForVehicles(this.state.movies);
   }
 
   randomScrollForRefresh = async () => {
@@ -66,10 +78,10 @@ class App extends Component {
     return (
       <div className="App">
 
-        <ScrollContainer 
+        <ScrollContainer
           className="scroll"
           randomMovieObject={this.state.randomMovieObject} />
-        <h1 
+        <h1
           className="header">Star Wars</h1>
         <div>
           <input
@@ -77,18 +89,18 @@ class App extends Component {
             value='View Favorites'
           />fave#
         </div>
-        
+
         <ButtonContainer
           className="button-container"
           peopleSearch={this.peopleSearch}
           planetSearch={this.planetSearch}
           vehicleSearch={this.vehicleSearch}
-          />
+        />
 
-          <CardContainer
-            cards={this.state.cards}
-            homeWorldSearch={this.homeWorldSearch}/>
-            homeWorld={}
+        <CardContainer
+          characters={this.state.characters}
+        />
+
 
 
       </div>
