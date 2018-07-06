@@ -3,6 +3,7 @@ import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/Butto
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
 import { firstFetch, fecthForPeople } from '../../ApiCall/ApiCall';
 import {searchForPeople, searchForPlanets, searchForVehicles} from './ButtonSearhingHelper'
+import CardContainer from '../../StatelessComponents/CardContainer/CardContainer'
 
 
 import './App.css';
@@ -13,17 +14,14 @@ class App extends Component {
     this.state = {
       movies: [],
       randomMovieObject: {},
-      characters: []
+      cards: []
     };
   }
 
   peopleSearch = async ()=>{
     const characterPaths = searchForPeople(this.state)
     const characters = await fecthForPeople(characterPaths);
-    console.log(characters);
-    
-    this.setState({characters})
-    
+    this.setState({cards: characters})
   }
 
   planetSearch = () => {
@@ -33,10 +31,6 @@ class App extends Component {
   vehicleSearch = () => {
     searchForVehicles(this.state.movies)
   }
-
-  
-
-  
 
   randomScrollForRefresh = async () => {
     const movies = this.state.movies;
@@ -80,8 +74,9 @@ class App extends Component {
           peopleSearch={this.peopleSearch}
           planetSearch={this.planetSearch}
           vehicleSearch={this.vehicleSearch}
-          
           />
+
+          <CardContainer cards={this.state.cards}/>
 
 
       </div>
