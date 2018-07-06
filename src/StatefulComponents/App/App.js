@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
-import { firstFetch } from '../../ApiCall/ApiCall';
+import { firstFetch, fecthForPeople } from '../../ApiCall/ApiCall';
 import {searchForPeople, searchForPlanets, searchForVehicles} from './ButtonSearhingHelper'
 
 
@@ -12,12 +12,18 @@ class App extends Component {
     super();
     this.state = {
       movies: [],
-      randomMovieObject: {}
+      randomMovieObject: {},
+      characters: []
     };
   }
 
-  peopleSearch = ()=>{
-    searchForPeople(this.state.movies)
+  peopleSearch = async ()=>{
+    const characterPaths = searchForPeople(this.state)
+    const characters = await fecthForPeople(characterPaths);
+    console.log(characters);
+    
+    this.setState({characters})
+    
   }
 
   planetSearch = () => {
