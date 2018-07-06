@@ -1,33 +1,46 @@
 import React, { Component } from 'react';
 import Form from '../Form/Form';
-import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer'
-import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer'
-import { firstFetch } from '../../ApiCall/ApiCall'
+import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
+import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
+import { firstFetch } from '../../ApiCall/ApiCall';
 
 // import './App.css';
 
 class App extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
-      scroll: []
-    }
+      scroll: [],
+      randomMovieObject: {}
+    };
   }
 
-  async componentDidMount () {
-    
+  randomScrollForRefresh = async () => {
+    const scroll = this.state.scroll;
+    var randomMovieObject = scroll[Math.floor(Math.random() * scroll.length)];
+    await this.setState({
+      randomMovieObject:
+      {
+        openingCrawl: randomMovieObject.opening_crawl,
+        title: randomMovieObject.title,
+        date: randomMovieObject.release_date
+      }
+    });
+  }
 
+  async componentDidMount() {
     const firstResponse = await firstFetch();
-    const scrollValue = firstResponse.results 
-    this.setState({scroll: scrollValue});
-    debugger
+    const scrollValue = firstResponse.results;
+    await this.setState({ scroll: scrollValue });
+    this.randomScrollForRefresh();
+
   }
 
   render() {
     return (
       <div className="App">
 
-        <ScrollContainer />
+        <ScrollContainer randomMovieObject={this.state.randomMovieObject} />
         <h1 className="App-title">Star Wars</h1>
         <div>
           <input
