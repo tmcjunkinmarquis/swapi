@@ -1,17 +1,27 @@
 import React from 'react';
 
-export const ButtonContainer = ()=>{
+export const ButtonContainer = (props)=>{
+  const {peopleSearch, planetSearch, vehicleSearch } = props
+  
+  
   return(
     <div>I am a button container
       <input 
+
         type="button"
-        value="people"/>
+        value="people"
+        onClick={peopleSearch}
+        />
       <input 
         type="button"
-        value="planets"/>
+        value="planets"
+        onClick={planetSearch }
+        />
       <input 
         type="button"
-        value="vehicles" />
+        value="vehicles" 
+        onClick={vehicleSearch}
+        />
     </div>
   );
 };

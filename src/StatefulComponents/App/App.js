@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
 import { firstFetch } from '../../ApiCall/ApiCall';
+import {vehicleSearch} from './ButtonSearhingHelper'
+
 
 import './App.css';
 
@@ -14,6 +15,16 @@ class App extends Component {
       randomMovieObject: {}
     };
   }
+
+  peopleSearch = () => {
+    console.log('happy in peopleSearch'); 
+  }
+
+  planetSearch = () => {
+    console.log('happy in planetSearch');
+  }
+
+  
 
   randomScrollForRefresh = async () => {
     const scroll = this.state.scroll;
@@ -52,7 +63,13 @@ class App extends Component {
           />fave#
         </div>
         
-        <ButtonContainer className="button-container" />
+        <ButtonContainer
+          className="button-container"
+          peopleSearch={this.peopleSearch}
+          planetSearch={this.planetSearch}
+          vehicleSearch={vehicleSearch}
+          
+          />
 
 
       </div>
