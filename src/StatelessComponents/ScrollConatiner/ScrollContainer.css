@@ -1,5 +1,38 @@
-.scroll-container {
-  height: 500px;
-  width: 300px;
-  border: 2px solid red ;
+p {
+  color: #FFFF82;
+}
+
+
+.board {
+  background-color: blue;
+  font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+  transform: perspective(300px) rotateX(25deg);
+  transform-origin: 50% 100%;
+  text-align: justify;
+  position: absolute;
+  margin-left: -9em;
+  font-weight: bold;
+  overflow: hidden;
+  font-size: 350%;
+  height: 50em;
+  width: 18em;
+  bottom: 0;
+  left: 50%;
+}
+
+
+
+.content {
+  animation: scroll 100s linear 16s;
+  position: absolute;
+  top: 100%;
+}
+
+@keyframes scroll {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: -170%;
+  }
 }

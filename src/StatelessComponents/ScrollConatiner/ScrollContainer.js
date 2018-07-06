@@ -1,17 +1,17 @@
-import React from 'react'
-import './ScrollContainer.css'
+import React from 'react';
+import './ScrollContainer.css';
 
-export const ScrollContainer = (props)=>{
-  
-  const { openingCrawl, title, date} = props.randomMovieObject;
+export const ScrollContainer = (props) => {
+
+  const { openingCrawl, title, date } = props.randomMovieObject;
 
   return (
-    <div className="scroll-container">
-      I am a ScrollContainer
-      <p>{`${openingCrawl}`}</p>
-      <p>Title: {`${title}`} </p>
-      <p>Date: {`${date}`}</p>
+    <div className="board">
+      <div className="content">
+        <p>{`${openingCrawl}`}</p>
+        <p>Title: {`${title}`} </p>
+        <p>Date: {`${date}`}</p>
+      </div>
     </div>
-  )
-
-}
+  );
+};

@@ -4,7 +4,7 @@ import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/Butto
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
 import { firstFetch } from '../../ApiCall/ApiCall';
 
-// import './App.css';
+import './App.css';
 
 class App extends Component {
   constructor() {
@@ -40,8 +40,11 @@ class App extends Component {
     return (
       <div className="App">
 
-        <ScrollContainer randomMovieObject={this.state.randomMovieObject} />
-        <h1 className="App-title">Star Wars</h1>
+        <ScrollContainer 
+          className="scroll"
+          randomMovieObject={this.state.randomMovieObject} />
+        <h1 
+          className="header">Star Wars</h1>
         <div>
           <input
             type="button"
@@ -49,7 +52,7 @@ class App extends Component {
           />fave#
         </div>
         <Form />
-        <ButtonContainer />
+        <ButtonContainer className="button-container" />
 
 
       </div>
