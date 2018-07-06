@@ -5,8 +5,10 @@ const Card = (props)=>{
   
   return(
     <div className="card">
-      <input type="button"
-      value = "faveOrNot ?"
+      <input 
+        type="button"
+        value = "faveOrNot ?"
+        className ="btn active"
       />
       <p>{props.character.name}</p>
       <p>{props.character.homeworld.name}</p>
