@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
 import { firstFetch, fetchForPeople, fetchForHomeworld, fetchForSpecies } from '../../ApiCall/ApiCall';
-import { searchForPeople, searchForPlanets, searchForVehicles } from './ButtonSearhingHelper';
+// import { searchForPeople, searchForPlanets, searchForVehicles } from './ButtonSearhingHelper';
 import CardContainer from '../../StatelessComponents/CardContainer/CardContainer';
 
 
@@ -21,11 +21,14 @@ class App extends Component {
   }
 
   peopleSearch = async () => {
-    const characterPaths = searchForPeople(this.state);
-    const characters = await fetchForPeople(characterPaths);
-    const charactersWithHomeworld = await this.homeWorldSearch(characters);
-    const charactersCompleteWithSpecies = await this.speciesSearch(charactersWithHomeworld);
-    this.setState({ characters: charactersCompleteWithSpecies });
+    
+    // const characterPaths = searchForPeople(url);
+    const charactersWithoutEverything = await fetchForPeople();
+    
+    const charactersWithHomeworld = await this.homeWorldSearch(charactersWithoutEverything);
+    const characters = await this.speciesSearch(charactersWithHomeworld);
+    
+    this.setState({ characters });
   }
 
   speciesSearch = (characters) => {
@@ -46,11 +49,11 @@ class App extends Component {
   }
 
   planetSearch = () => {
-    searchForPlanets(this.state.movies);
+    
   }
 
   vehicleSearch = () => {
-    searchForVehicles(this.state.movies);
+    
   }
 
   randomScrollForRefresh = async () => {

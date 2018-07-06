@@ -5,14 +5,14 @@ export const firstFetch = () => {
 
 };
 
-export const fetchForPeople = async (characterPaths) => {
-  let answer = [];
-  await Promise.all(characterPaths.map(async path =>{
-    const response = await fetch(path);
+export const fetchForPeople = async () => {
+  const url = 'https://swapi.co/api/people/'
+    const response = await fetch(url);
     const data = await response.json();
-    answer.push(data);
-  }));
-  return answer;
+    
+    
+    return data.results
+    
 };
 
 export const fetchForSpecies = async (path) => {

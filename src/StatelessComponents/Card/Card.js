@@ -2,14 +2,15 @@ import React from 'react';
 import './Card.css';
 
 const Card = (props)=>{
-  const { name, homeowrld, species} = props;
+
 
   return(
     <div className="card">
-      <p>{name}</p>
-      <p>{homeowrld}</p>
-      <p>{species}</p>
-      
+      <p>{props.name}</p>
+      <p>{props.homeworld.name}</p>
+      <p>{props.homeworld.population}</p>
+      <p>{props.species.name}</p>
+      <p>{props.species.language}</p>
     </div>
   );
 };
