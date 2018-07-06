@@ -14,6 +14,7 @@ class App extends Component {
     this.state = {
       movies: [],
       randomMovieObject: {},
+      favorites: [],
       cards: [],
       characters: []
 
@@ -102,6 +103,7 @@ class App extends Component {
 
         <CardContainer
           characters={this.state.characters}
+          favorites={this.state.favorites}
         />
 
 
