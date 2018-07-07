@@ -30,8 +30,10 @@ class App extends Component {
     !this.state.characters.length && this.peopleSearch();
   }
 
-  pickedPlanets = () => {
-    this.planetSearch();
+  pickedPlanets = (buttonType) => {
+    (this.state.cardType !== buttonType && this.state.planets.length) && this.setState({cardType: buttonType});
+
+    !this.state.planets.length && this.planetSearch();  
   }
 
   pickedVehicles = () => {
@@ -42,17 +44,17 @@ class App extends Component {
     if (buttonType === 'people') {
       this.pickedPeople(buttonType);
     }
+    if (buttonType === 'planets') {
+      this.pickedPlanets(buttonType)
+    }
   }
 
 
-  peopleSearch = async (buttonType) => {
-    
+  peopleSearch = async (buttonType) => { 
     const charactersWithoutEverything = await fetchForPeople();
     const charactersWithHomeworld = await this.homeWorldSearch(charactersWithoutEverything);
     const characters = await this.speciesSearch(charactersWithHomeworld);
-    await this.setState({ characters, cards: characters, cardType: 'people' });
-    
-    
+    await this.setState({ characters, cards: characters, cardType: 'people' });  
   }
 
   speciesSearch = (characters) => {
@@ -75,7 +77,7 @@ class App extends Component {
   planetSearch = async () => {
     const planetsWithoutEverything = await fetchForPlanets();//array of 10 planets
     const hydratedPlanets = await this.residentsSearch(planetsWithoutEverything);
-    this.setState({ planets: hydratedPlanets });
+    this.setState({ planets: hydratedPlanets, cards: hydratedPlanets, cardType: 'planets' });
 
   }
 

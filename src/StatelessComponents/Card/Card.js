@@ -4,11 +4,10 @@ import './Card.css';
 const Card = (props) => {
 
   const { cardType } = props;
-  const { name } = props.card;
-  console.log(name);
-
+  
 
   const renderPeople = () => {
+    const { name } = props.card;
     return <div className="card">
       <input
         type="button"
@@ -23,11 +22,16 @@ const Card = (props) => {
     </div>;
   };
 
+  const renderPlanets = () =>{
+    return <div>I am a planet</div>
+  }
+
   
 
   return (
    <div>
      {cardType === 'people' && renderPeople()}
+     {cardType === 'planets' && renderPlanets()}
    </div>
     
   );
