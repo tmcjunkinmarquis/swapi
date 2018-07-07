@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
-import { firstFetch, fetchForPeople, fetchForHomeworld, fetchForSpecies } from '../../ApiCall/ApiCall';
+import { firstFetch, fetchForPeople, fetchForHomeworld, fetchForSpecies, fetchForPlanets, getResidentsNames } from '../../ApiCall/ApiCall';
 // import { searchForPeople, searchForPlanets, searchForVehicles } from './ButtonSearhingHelper';
 import CardContainer from '../../StatelessComponents/CardContainer/CardContainer';
 
@@ -16,19 +16,16 @@ class App extends Component {
       randomMovieObject: {},
       favorites: [],
       cards: [],
-      characters: []
+      characters: [],
+      planets: []
 
     };
   }
 
   peopleSearch = async () => {
-    
-    // const characterPaths = searchForPeople(url);
     const charactersWithoutEverything = await fetchForPeople();
-    
     const charactersWithHomeworld = await this.homeWorldSearch(charactersWithoutEverything);
     const characters = await this.speciesSearch(charactersWithHomeworld);
-    
     this.setState({ characters });
   }
 
@@ -49,12 +46,26 @@ class App extends Component {
     return Promise.all(unresolvedPromises);
   }
 
-  planetSearch = () => {
+  planetSearch = async () => {
+    const planetsWithoutEverything = await fetchForPlanets();//array of 10 planets
+    const hydratedPlanets = await this.residentsSearch(planetsWithoutEverything);
+    this.setState({planets: hydratedPlanets});  
+  }
+
+  residentsSearch = async (planets) => {
+    let hydratedPlanets;
     
+    const  promiseOfHydratedPlanets =  planets.map(async planet => {
+      const residentsOfPlanet = await getResidentsNames(planet);
+      const residents = await Promise.all(residentsOfPlanet);
+      return { ...planet, residents }; 
+    });
+    hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);
+    return hydratedPlanets; 
   }
 
   vehicleSearch = () => {
-    
+
   }
 
   randomScrollForRefresh = async () => {
