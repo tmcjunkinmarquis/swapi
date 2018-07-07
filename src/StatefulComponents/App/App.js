@@ -12,6 +12,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      cardType: '',
       movies: [],
       randomMovieObject: {},
       favorites: [],
@@ -22,11 +23,36 @@ class App extends Component {
     };
   }
 
-  peopleSearch = async () => {
+  pickedPeople =  (buttonType) => {
+    (this.state.cardType !== buttonType && this.state.characters.length) 
+    && this.setState({cardType: buttonType});
+
+    !this.state.characters.length && this.peopleSearch();
+  }
+
+  pickedPlanets = () => {
+    this.planetSearch();
+  }
+
+  pickedVehicles = () => {
+    this.vehicleSearch();
+  }
+
+  pickAsearch = async (buttonType) => {
+    if (buttonType === 'people') {
+      this.pickedPeople(buttonType);
+    }
+  }
+
+
+  peopleSearch = async (buttonType) => {
+    
     const charactersWithoutEverything = await fetchForPeople();
     const charactersWithHomeworld = await this.homeWorldSearch(charactersWithoutEverything);
     const characters = await this.speciesSearch(charactersWithHomeworld);
-    this.setState({ characters });
+    await this.setState({ characters, cards: characters, cardType: 'people' });
+    
+    
   }
 
   speciesSearch = (characters) => {
@@ -49,19 +75,20 @@ class App extends Component {
   planetSearch = async () => {
     const planetsWithoutEverything = await fetchForPlanets();//array of 10 planets
     const hydratedPlanets = await this.residentsSearch(planetsWithoutEverything);
-    this.setState({planets: hydratedPlanets});  
+    this.setState({ planets: hydratedPlanets });
+
   }
 
   residentsSearch = async (planets) => {
     let hydratedPlanets;
-    
-    const  promiseOfHydratedPlanets =  planets.map(async planet => {
+
+    const promiseOfHydratedPlanets = planets.map(async planet => {
       const residentsOfPlanet = await getResidentsNames(planet);
       const residents = await Promise.all(residentsOfPlanet);
-      return { ...planet, residents }; 
+      return { ...planet, residents };
     });
     hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);
-    return hydratedPlanets; 
+    return hydratedPlanets;
   }
 
   vehicleSearch = () => {
@@ -86,7 +113,6 @@ class App extends Component {
     const movies = firstResponse.results;
     await this.setState({ movies });
     this.randomScrollForRefresh();
-
   }
 
   render() {
@@ -107,18 +133,14 @@ class App extends Component {
 
         <ButtonContainer
           className="button-container"
-          peopleSearch={this.peopleSearch}
-          planetSearch={this.planetSearch}
-          vehicleSearch={this.vehicleSearch}
+          pickAsearch={this.pickAsearch}
         />
 
         <CardContainer
-          characters={this.state.characters}
+          cardType={this.state.cardType}
+          cards={this.state.cards}
           favorites={this.state.favorites}
         />
-
-
-
       </div>
     );
   }

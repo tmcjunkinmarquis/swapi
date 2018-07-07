@@ -2,12 +2,14 @@ import React from 'react';
 import Card from '../Card/Card';
 import './CardContainer.css';
 
-const CardContainer = ({ characters, favorites }) => {
+const CardContainer = ({ cardType, cards, favorites }) => {
 
-  const makeCards = characters.map(character => {
+  const makeCards = cards.map(card => {
     return <Card
-      character={character}
+      cardType={cardType}
+      card={card}
       favorites={favorites}
+      key={Math.random()}
     />;
 
   });

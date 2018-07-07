@@ -1,21 +1,35 @@
 import React from 'react';
 import './Card.css';
 
-const Card = (props)=>{
-  
-  return(
-    <div className="card">
-      <input 
+const Card = (props) => {
+
+  const { cardType } = props;
+  const { name } = props.card;
+  console.log(name);
+
+
+  const renderPeople = () => {
+    return <div className="card">
+      <input
         type="button"
-        value = "faveOrNot ?"
-        className ="btn active"
+        value="faveOrNot ?"
+        className="btn active"
       />
-      <p>{props.character.name}</p>
-      <p>{props.character.homeworld.name}</p>
-      <p>{props.character.homeworld.population}</p>
-      <p>{props.character.species.name}</p>
-      <p>{props.character.species.language}</p>
-    </div>
+      <p>{name}</p>
+      <p>{props.card.homeworld.name}</p>
+      <p>{props.card.homeworld.population}</p>
+      <p>{props.card.species.name}</p>
+      <p>{props.card.species.language}</p>
+    </div>;
+  };
+
+  
+
+  return (
+   <div>
+     {cardType === 'people' && renderPeople()}
+   </div>
+    
   );
 };
 

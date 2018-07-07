@@ -1,26 +1,27 @@
 import React from 'react';
 
-export const ButtonContainer = (props)=>{
-  const {peopleSearch, planetSearch, vehicleSearch } = props
-  
-  
-  return(
+export const ButtonContainer = (props) => {
+  const { pickAsearch } = props;
+
+
+
+  return (
     <div>
-      <input 
+      <input
         type="button"
         value="people"
-        onClick={peopleSearch}
-        />
-      <input 
+        onClick={() => pickAsearch('people')}
+      />
+      <input
         type="button"
         value="planets"
-        onClick={planetSearch }
-        />
-      <input 
+        onClick={() => pickAsearch('planets')}
+      />
+      <input
         type="button"
-        value="vehicles" 
-        onClick={vehicleSearch}
-        />
+        value="vehicles"
+        onClick={() => pickAsearch('vehicles')}
+      />
     </div>
   );
 };
