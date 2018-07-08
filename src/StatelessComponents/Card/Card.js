@@ -3,15 +3,17 @@ import './Card.css';
 import PropTypes from 'prop-types';
 
 const Card = (props) => {
-  const { name } = props.card;
-  const { cardType, isFavorite, toggleFavorite } = props;
+  const { name, id } = props.card;
+  const { cardType, isFavorite, toggleFavorite} = props;
+
 
   const renderPeople = () => {
     return <div className="card">
     <div>
         <input
+          onClick={()=>toggleFavorite(id)}
           type="button"
-          value="faveOrNot ?"
+          value="favorites"
           className="btn active"
         />
         {isFavorite}
@@ -37,7 +39,7 @@ const Card = (props) => {
     };
     return <div className="card">
       <input
-        onClick={()=>props.toggleFavorite}
+        onClick={()=>toggleFavorite}
         type="button"
         value="faveOrNot ?"
         className="btn active"
@@ -53,7 +55,7 @@ const Card = (props) => {
   const renderVehicles = ()=>{
     return <div className="card">
       <input
-        onClick={()=>toggleFavorite}
+        onClick={() => toggleFavorite}
         type="button"
         value="NotFave"
         className="btn active"

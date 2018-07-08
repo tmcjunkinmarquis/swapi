@@ -20,7 +20,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      isFavorite: false,
+      // isFavorite: false,
       cardType: '',
       movies: [],
       randomMovieObject: {},
@@ -32,61 +32,25 @@ class App extends Component {
     };
   }
 
-  toggleFavorite = ()=>{
-    console.log('happy');
-    
-    this.setState({ isFavorite: !this.state.isFavorite });
+  toggleFavorite = (id)=>{
+    const favorites = this.state.cards.filter((card)=>{
+      return card.id === id;
+    });
   }
-
-  pickedPeople = (buttonType) => {
-    // (this.state.cardType !== buttonType && this.state.characters.length)
-      this.setState({ cardType: buttonType });
-    // !this.state.characters.length && this.peopleSearch();
-  }
-
-  pickedPlanets = (buttonType) => {
-    // (this.state.cardType !== buttonType && this.state.planets.length)
-      this.setState({ cardType: buttonType });
-    // !this.state.planets.length && this.planetSearch();
-  }
-
-  pickedVehicles = async (buttonType) => {
-    (this.state.cardType !== buttonType && this.state.vehicles.length)
-      && await this.setState({ cardType: buttonType });
-    !this.state.vehicles.length && this.vehicleSearch();
-  }
-
-  // pickAsearch = (event) => {
-  //   if (event.target.value === 'people' && !this.state.cardType) {
-  //     this.peopleSearch();
-  //   } else {
-  //     this.pickedPeople(event.target.value);
-  //   }
-  //   if (event.target.value === 'planets' && !this.state.cardType) {
-  //     this.planetSearch();
-  //   } else {
-  //     this.pickedPlanets(event.target.value);
-  //   }
-  //   if (event.target.value === 'vehicles' && !this.state.cardType) {
-  //     this.vehicleSearch()
-  //   } else {
-  //     this.pickedVehicles(event.target.value);  
-  //   }
-  // }
 
   pickAsearch = async (event) => {
     if (event.target.value === 'people' && this.state.cardType !== 'people' && this.state.characters.length === 0){
       this.peopleSearch();
-    } else if (event.target.value === 'planets' && this.state.cardType !== 'planets' && this.state.planets.length === 0){ //needs one more conditional
+    } else if (event.target.value === 'planets' && this.state.cardType !== 'planets' && this.state.planets.length === 0){ 
       this.planetSearch();
     } else if (event.target.value === 'vehicles' && this.state.cardType !== 'vehicles' && this.state.vehicles.length === 0){
       this.vehicleSearch();
     } else if (event.target.value === 'people'){
-      this.setState({ cardType: 'people', cards: this.state.characters})
+      this.setState({ cardType: 'people', cards: this.state.characters});
     } else if (event.target.value === 'planets'){
-      this.setState({ cardType: 'planets', cards: this.state.planets})
+      this.setState({ cardType: 'planets', cards: this.state.planets});
     } else if (event.target.value === 'vehicles'){
-      this.setState({ cardType: 'vehicles', cards: this.state.vehicles })
+      this.setState({ cardType: 'vehicles', cards: this.state.vehicles });
     } 
   }
 
@@ -113,9 +77,9 @@ speciesSearch = (characters) => {
 
 //use this homeWorldSearch as pattern
 homeWorldSearch = async (characters) => {
-  const unresolvedPromises = characters.map(async character => {
+  const unresolvedPromises = characters.map(async (character, index) => {
     const homeworld = await fetchForHomeworld(character.homeworld);
-    return { ...character, homeworld };
+    return { ...character, homeworld, id:`${character.name} + ${index}` };
   });
   return Promise.all(unresolvedPromises);
 }
@@ -195,6 +159,7 @@ render() {
         <input
           type="button"
           value='View Favorites'
+          onClick={(event)=>this.pickAsearch(event)}
         />fave#
         </div>
       <ButtonContainer
@@ -207,6 +172,7 @@ render() {
         cards={this.state.cards}
         favorites={this.state.favorites}
         isFavorite={this.state.isFavorite}
+        pickAsearch={this.pickAsearch}
       />
     </div>
   );
