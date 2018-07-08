@@ -34,7 +34,6 @@ class App extends Component {
 
   toggleFavorite = (id)=>{
     const favorited = this.state.cards.filter((card)=>{
-      // console.log(card);
       return card.id === id;
     });
     this.setState({favorites: favorited}) 
@@ -89,7 +88,7 @@ homeWorldSearch = async (characters) => {
 planetsCleaner = (planets) => {
   const cleanPlanets = planets.reduce((acc, planet, index) => {
     if (!planet.residents.length) {
-      const newPlanet = Object.assign({}, planet, { residents: 'no residents' });
+      const newPlanet = Object.assign({}, planet, { residents: [{name:'no residents'}] });
       acc.push(newPlanet);
     } else {
       acc.push(planet);
@@ -105,23 +104,23 @@ planetSearch = async () => {
   const hydratedPlanets =
     await this.residentsSearch(planetsWithoutEverything);
   const cleanHydratedPlanets = this.planetsCleaner(hydratedPlanets);
-  const cleanHydPlanetsWithId = cleanHydratedPlanets.map((planet, index)=>{
-    return {...planet, id: `${planet.name} + ${index}`};
-  });
+  // const cleanHydPlanetsWithId = cleanHydratedPlanets.map((planet)=>{
+  //   return {...planet, };
+  // });
   this.setState({
     cardType: 'planets',
-    planets: cleanHydPlanetsWithId,
-    cards: cleanHydPlanetsWithId
+    planets: cleanHydratedPlanets,
+    cards: cleanHydratedPlanets
   });
 }
 
 residentsSearch = async (planets) => {
   let hydratedPlanets;
 
-  const promiseOfHydratedPlanets = planets.map(async planet => {
+  const promiseOfHydratedPlanets = planets.map(async (planet, index) => {
     const residentsOfPlanet = await getResidentsNames(planet);
     const residents = await Promise.all(residentsOfPlanet);
-    return { ...planet, residents };
+    return { ...planet, residents, id: `${planet.name} + ${index}` };
   });
   hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);
   return hydratedPlanets;
@@ -132,7 +131,6 @@ vehicleSearch = async () => {
   const vehiclesWithId = await vehicles.map((vehicle, index)=>{
     return { ...vehicle, id: `${vehicle.name} + ${index}`};
   });
-  // console.log({vehiclesWithId});
   
   await this.setState({ 
     cardType: 'vehicles', 

@@ -32,7 +32,8 @@ const Card = (props) => {
     const renderResidents = (residents) => {
       return residents.map((resident, index) => {
         return <p
-          key={index}>
+          key={`${resident.name}+${index}`}
+        >
           {resident.name}
         </p>;    
       });
