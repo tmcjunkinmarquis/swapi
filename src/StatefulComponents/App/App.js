@@ -24,10 +24,10 @@ class App extends Component {
     };
   }
 
-  pickedPeople =  (buttonType) => {
-    (this.state.cardType !== buttonType && this.state.characters.length) 
-    && this.setState({cardType: buttonType});
-
+  pickedPeople = (buttonType) => {
+    (this.state.cardType !== buttonType && this.state.characters.length)
+    && this.setState({ cardType: buttonType });
+    
     !this.state.characters.length && this.peopleSearch();
   }
 
@@ -38,22 +38,25 @@ class App extends Component {
     !this.state.planets.length && this.planetSearch();  
   }
 
-  pickedVehicles = (buttonType) => {
+  pickedVehicles = async (buttonType) => {
     (this.state.cardType !== buttonType && this.state.vehicles.length) 
-    && this.setState({ cardType: buttonType });
+    && await this.setState({ cardType: buttonType });
 
     !this.state.vehicles.length && this.vehicleSearch();  
   }
 
-  pickAsearch = (buttonType) => {
-    if (buttonType === 'people') {
-      this.pickedPeople(buttonType);
+  pickAsearch = (event) => {
+    if (event.target.value === 'people' && !this.state.cardType) {
+      this.peopleSearch();
+    } else {
+      this.pickedPeople(event.target.value);
     }
-    if (buttonType === 'planets') {
-      this.pickedPlanets(buttonType)
+
+    if (event.target.value === 'planets') {
+      this.pickedPlanets(event.target.value);
     }
-    if (buttonType === 'vehicles') {
-      this.pickedVehicles(buttonType)
+    if (event.target.value === 'vehicles') {
+      this.pickedVehicles(event.target.value);
     }
   }
 
@@ -82,10 +85,25 @@ class App extends Component {
     return Promise.all(unresolvedPromises);
   }
 
+  planetsClearner = (planets)=>{
+    const cleanPlanets = planets.reduce((acc, planet)=>{
+      if (!planet.residents.length) {
+        Object.assign({}, planet, {residents: 'no residents'})
+        acc.push(planet)
+      } else {
+        acc.push(planet)
+      }
+      return acc
+    },[]);
+    
+    return cleanPlanets;
+  }
+
   planetSearch = async () => {
     const planetsWithoutEverything = await fetchForPlanets();//array of 10 planets
     const hydratedPlanets = await this.residentsSearch(planetsWithoutEverything);
-    this.setState({ planets: hydratedPlanets, cards: hydratedPlanets, cardType: 'planets' });
+    const cleanHydratedPlanets = this.planetsClearner(hydratedPlanets);
+    this.setState({ cardType: 'planets', planets: cleanHydratedPlanets, cards: cleanHydratedPlanets });
   }
 
   residentsSearch = async (planets) => {
@@ -97,14 +115,14 @@ class App extends Component {
       return { ...planet, residents };
     });
     hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);
+   
+    
     return hydratedPlanets;
   }
 
   vehicleSearch = async () => {
     const vehicles = await fetchForVehicles();
-    await this.setState({ vehicles, cards: vehicles, cardType: 'vehicles' });
-    
-    
+    await this.setState({ cardType: 'vehicles', vehicles, cards: vehicles}); 
   }
 
   randomScrollForRefresh = async () => {

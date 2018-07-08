@@ -35,7 +35,6 @@ export const fetchForPlanets = async () => {
 
 
 export const getResidentsNames = (planet) => {
-
   const fetchForResident = async (path) => {
     const response = await fetch(path);
     const residentObject = await response.json();

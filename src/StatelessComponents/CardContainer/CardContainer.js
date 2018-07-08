@@ -1,15 +1,16 @@
 import React from 'react';
 import Card from '../Card/Card';
 import './CardContainer.css';
+import PropTypes from 'prop-types'
 
 const CardContainer = ({ cardType, cards, favorites }) => {
 
-  const makeCards = cards.map(card => {
+  const makeCards = cards.map((card, index) => {
     return <Card
       cardType={cardType}
       card={card}
       favorites={favorites}
-      key={Math.random()}
+      key={cardType+index}
     />;
 
   });
@@ -20,5 +21,12 @@ const CardContainer = ({ cardType, cards, favorites }) => {
     </div>
   );
 };
+
+CardContainer.propTypes = {
+  cardType: PropTypes.string,
+  cards: PropTypes.array,
+  favorites: PropTypes.array
+};
+CardContainer.defaultProps = { favorites: [] };
 
 export default CardContainer;

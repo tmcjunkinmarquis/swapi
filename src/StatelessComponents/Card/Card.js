@@ -1,5 +1,6 @@
 import React from 'react';
 import './Card.css';
+import PropTypes from 'prop-types'
 
 const Card = (props) => {
   const { name } = props.card;
@@ -14,17 +15,21 @@ const Card = (props) => {
         className="btn active"
       />
       <p>{name}</p>
-      <p>{props.card.homeworld.name}</p>
+      
       <p>{props.card.homeworld.population}</p>
       <p>{props.card.species.name}</p>
       <p>{props.card.species.language}</p>
+      <p>{props.card.homeworld.name}</p>
     </div>;
   };
 
   const renderPlanets = () => {
     const renderResidents = (residents) => {
-      return residents.map(resident => {
-        return <p>{resident.name}</p>;    
+      return residents.map((resident, index) => {
+        return <p
+          key={index}>
+          {resident.name}
+        </p>;    
       });
     };
     return <div className="card">
@@ -37,15 +42,12 @@ const Card = (props) => {
       <p>{props.card.terrain}</p>
       <p>{props.card.population}</p>
       <p>{props.card.climate}</p>
-      {props.card.residents.length && renderResidents(props.card.residents)}
+      {renderResidents(props.card.residents)}    
     </div>;
   };
 
   const renderVehicles = ()=>{
     return <div className="card">
-      {/* model: "Digger Crawler"
-      name: "Sand Crawler"
-      passengers: "30" */}
       <input
         type="button"
         value="faveOrNot ?"
@@ -66,5 +68,11 @@ const Card = (props) => {
     </div>
   );
 };
+
+Card.propTypes = {
+  card: PropTypes.object.isRequired,
+  cardType: PropTypes.string.isRequired 
+};
+
 
 export default Card;

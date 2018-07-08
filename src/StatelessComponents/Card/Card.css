@@ -3,6 +3,7 @@
   height: 200px;
   width: 150px;
   border: 2px solid pink;
+  overflow-y: auto;
 }
 
 p {

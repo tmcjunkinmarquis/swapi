@@ -10,17 +10,17 @@ export const ButtonContainer = (props) => {
       <input
         type="button"
         value="people"
-        onClick={() => pickAsearch('people')}
+        onClick={(event) => pickAsearch(event)}
       />
       <input
         type="button"
         value="planets"
-        onClick={() => pickAsearch('planets')}
+        onClick={(event) => pickAsearch(event)}
       />
       <input
         type="button"
         value="vehicles"
-        onClick={() => pickAsearch('vehicles')}
+        onClick={(event) => pickAsearch(event)}
       />
     </div>
   );
