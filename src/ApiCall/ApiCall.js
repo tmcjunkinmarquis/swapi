@@ -29,8 +29,8 @@ export const fetchForPlanets = async () => {
   const url = 'https://swapi.co/api/planets/';
 
   const response = await fetch(url);
-  const data = await response.json();
-  return data.results;
+  const planetsData = await response.json();
+  return planetsData.results;
 };
 
 
@@ -48,4 +48,9 @@ export const getResidentsNames = (planet) => {
   });
 };
 
-
+export const fetchForVehicles = async () => {
+  const url = 'https://swapi.co/api/vehicles/'
+  const response = await fetch(url);
+  const vehiclesData = await response.json();
+  return vehiclesData.results;
+}

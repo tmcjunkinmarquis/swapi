@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
 import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
-import { firstFetch, fetchForPeople, fetchForHomeworld, fetchForSpecies, fetchForPlanets, getResidentsNames } from '../../ApiCall/ApiCall';
+import { firstFetch, fetchForPeople, fetchForHomeworld, fetchForSpecies, fetchForPlanets, getResidentsNames, fetchForVehicles } from '../../ApiCall/ApiCall';
 // import { searchForPeople, searchForPlanets, searchForVehicles } from './ButtonSearhingHelper';
 import CardContainer from '../../StatelessComponents/CardContainer/CardContainer';
 
@@ -18,7 +18,8 @@ class App extends Component {
       favorites: [],
       cards: [],
       characters: [],
-      planets: []
+      planets: [],
+      vehicles: []
 
     };
   }
@@ -31,26 +32,33 @@ class App extends Component {
   }
 
   pickedPlanets = (buttonType) => {
-    (this.state.cardType !== buttonType && this.state.planets.length) && this.setState({cardType: buttonType});
+    (this.state.cardType !== buttonType && this.state.planets.length) 
+    && this.setState({cardType: buttonType});
 
     !this.state.planets.length && this.planetSearch();  
   }
 
-  pickedVehicles = () => {
-    this.vehicleSearch();
+  pickedVehicles = (buttonType) => {
+    (this.state.cardType !== buttonType && this.state.vehicles.length) 
+    && this.setState({ cardType: buttonType });
+
+    !this.state.vehicles.length && this.vehicleSearch();  
   }
 
-  pickAsearch = async (buttonType) => {
+  pickAsearch = (buttonType) => {
     if (buttonType === 'people') {
       this.pickedPeople(buttonType);
     }
     if (buttonType === 'planets') {
       this.pickedPlanets(buttonType)
     }
+    if (buttonType === 'vehicles') {
+      this.pickedVehicles(buttonType)
+    }
   }
 
 
-  peopleSearch = async (buttonType) => { 
+  peopleSearch = async () => { 
     const charactersWithoutEverything = await fetchForPeople();
     const charactersWithHomeworld = await this.homeWorldSearch(charactersWithoutEverything);
     const characters = await this.speciesSearch(charactersWithHomeworld);
@@ -78,7 +86,6 @@ class App extends Component {
     const planetsWithoutEverything = await fetchForPlanets();//array of 10 planets
     const hydratedPlanets = await this.residentsSearch(planetsWithoutEverything);
     this.setState({ planets: hydratedPlanets, cards: hydratedPlanets, cardType: 'planets' });
-
   }
 
   residentsSearch = async (planets) => {
@@ -93,8 +100,11 @@ class App extends Component {
     return hydratedPlanets;
   }
 
-  vehicleSearch = () => {
-
+  vehicleSearch = async () => {
+    const vehicles = await fetchForVehicles();
+    await this.setState({ vehicles, cards: vehicles, cardType: 'vehicles' });
+    
+    
   }
 
   randomScrollForRefresh = async () => {
