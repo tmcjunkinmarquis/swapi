@@ -24,6 +24,7 @@ export const ButtonContainer = (props) => {
     </div>
   );
 };
+
 ButtonContainer.propTypes = {
   pickAsearch: PropTypes.func.isRequired
 };

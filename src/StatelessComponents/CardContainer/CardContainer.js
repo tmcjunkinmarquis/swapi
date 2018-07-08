@@ -12,7 +12,6 @@ const CardContainer = ({ cardType, cards, favorites }) => {
       favorites={favorites}
       key={cardType+index}
     />;
-
   });
 
   return (

@@ -3,7 +3,6 @@ import './ScrollContainer.css';
 import PropTypes from 'prop-types';
 
 export const ScrollContainer = (props) => {
-
   const { openingCrawl, title, date } = props.randomMovieObject;
 
   return (
@@ -16,6 +15,7 @@ export const ScrollContainer = (props) => {
     </div>
   );
 };
+
 ScrollContainer.propTypes = {
   randomMovieObject: PropTypes.object.isRequired
 };

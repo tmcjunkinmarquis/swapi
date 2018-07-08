@@ -13,8 +13,6 @@ import {
   fetchForVehicles } from '../../ApiCall/ApiCall';
 import CardContainer from 
   '../../StatelessComponents/CardContainer/CardContainer';
-
-
 import './App.css';
 
 class App extends Component {
@@ -29,28 +27,24 @@ class App extends Component {
       characters: [],
       planets: [],
       vehicles: []
-
     };
   }
 
   pickedPeople = (buttonType) => {
     (this.state.cardType !== buttonType && this.state.characters.length)
-    && this.setState({ cardType: buttonType });
-    
+    && this.setState({ cardType: buttonType }); 
     !this.state.characters.length && this.peopleSearch();
   }
 
   pickedPlanets = (buttonType) => {
     (this.state.cardType !== buttonType && this.state.planets.length) 
     && this.setState({cardType: buttonType});
-
     !this.state.planets.length && this.planetSearch();  
   }
 
   pickedVehicles = async (buttonType) => {
     (this.state.cardType !== buttonType && this.state.vehicles.length) 
     && await this.setState({ cardType: buttonType });
-
     !this.state.vehicles.length && this.vehicleSearch();  
   }
 
@@ -60,15 +54,17 @@ class App extends Component {
     } else {
       this.pickedPeople(event.target.value);
     }
-
-    if (event.target.value === 'planets') {
+    if (event.target.value === 'planets' && !this.state.cardType) {
+      this.planetSearch();
+    } else {
       this.pickedPlanets(event.target.value);
     }
-    if (event.target.value === 'vehicles') {
-      this.pickedVehicles(event.target.value);
+    if (event.target.value === 'vehicles' && !this.state.cardType) {
+      this.vehicleSearch()
+    } else {
+      this.pickedVehicles(event.target.value);  
     }
   }
-
 
   peopleSearch = async () => { 
     const charactersWithoutEverything = await fetchForPeople();
@@ -92,7 +88,7 @@ class App extends Component {
   }
 
   //use this homeWorldSearch as pattern
-  homeWorldSearch = (characters) => {
+  homeWorldSearch = async (characters) => {
     const unresolvedPromises = characters.map(async character => {
       const homeworld = await fetchForHomeworld(character.homeworld);
       return { ...character, homeworld };
@@ -109,14 +105,13 @@ class App extends Component {
         acc.push(planet);
       }
       return acc;
-    }, []);
-    
+    }, []); 
     return cleanPlanets;
   }
 
   planetSearch = async () => {
     const planetsWithoutEverything = 
-      await fetchForPlanets();//array of 10 planets
+      await fetchForPlanets();
     const hydratedPlanets = 
       await this.residentsSearch(planetsWithoutEverything);
     const cleanHydratedPlanets = this.planetsClearner(hydratedPlanets);
@@ -135,9 +130,7 @@ class App extends Component {
       const residents = await Promise.all(residentsOfPlanet);
       return { ...planet, residents };
     });
-    hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);
-   
-    
+    hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);  
     return hydratedPlanets;
   }
 
@@ -169,7 +162,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-
         <ScrollContainer
           className="scroll"
           randomMovieObject={this.state.randomMovieObject} />
@@ -181,12 +173,10 @@ class App extends Component {
             value='View Favorites'
           />fave#
         </div>
-
         <ButtonContainer
           className="button-container"
           pickAsearch={this.pickAsearch}
         />
-
         <CardContainer
           cardType={this.state.cardType}
           cards={this.state.cards}

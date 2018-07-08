@@ -6,7 +6,6 @@ const Card = (props) => {
   const { name } = props.card;
   const { cardType } = props;
 
-
   const renderPeople = () => {
     return <div className="card">
       <input
@@ -14,8 +13,7 @@ const Card = (props) => {
         value="faveOrNot ?"
         className="btn active"
       />
-      <p>{name}</p>
-      
+      <p>{name}</p>  
       <p>{props.card.homeworld.population}</p>
       <p>{props.card.species.name}</p>
       <p>{props.card.species.language}</p>
