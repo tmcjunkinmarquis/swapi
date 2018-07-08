@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { ButtonContainer } from 
+import { ButtonContainer } from
   '../../StatelessComponents/ButtonContainer/ButtonContainer';
-import { ScrollContainer } from 
+import { ScrollContainer } from
   '../../StatelessComponents/ScrollConatiner/ScrollContainer';
-import { 
-  firstFetch, 
-  fetchForPeople, 
-  fetchForHomeworld, 
-  fetchForSpecies, 
-  fetchForPlanets, 
-  getResidentsNames, 
-  fetchForVehicles } from '../../ApiCall/ApiCall';
-import CardContainer from 
+import {
+  firstFetch,
+  fetchForPeople,
+  fetchForHomeworld,
+  fetchForSpecies,
+  fetchForPlanets,
+  getResidentsNames,
+  fetchForVehicles
+} from '../../ApiCall/ApiCall';
+import CardContainer from
   '../../StatelessComponents/CardContainer/CardContainer';
 import './App.css';
 
@@ -32,159 +33,175 @@ class App extends Component {
 
   pickedPeople = (buttonType) => {
     (this.state.cardType !== buttonType && this.state.characters.length)
-    && this.setState({ cardType: buttonType }); 
+      && this.setState({ cardType: buttonType });
     !this.state.characters.length && this.peopleSearch();
   }
 
   pickedPlanets = (buttonType) => {
-    (this.state.cardType !== buttonType && this.state.planets.length) 
-    && this.setState({cardType: buttonType});
-    !this.state.planets.length && this.planetSearch();  
+    (this.state.cardType !== buttonType && this.state.planets.length)
+      && this.setState({ cardType: buttonType });
+    !this.state.planets.length && this.planetSearch();
   }
 
   pickedVehicles = async (buttonType) => {
-    (this.state.cardType !== buttonType && this.state.vehicles.length) 
-    && await this.setState({ cardType: buttonType });
-    !this.state.vehicles.length && this.vehicleSearch();  
+    (this.state.cardType !== buttonType && this.state.vehicles.length)
+      && await this.setState({ cardType: buttonType });
+    !this.state.vehicles.length && this.vehicleSearch();
   }
+
+  // pickAsearch = (event) => {
+  //   if (event.target.value === 'people' && !this.state.cardType) {
+  //     this.peopleSearch();
+  //   } else {
+  //     this.pickedPeople(event.target.value);
+  //   }
+  //   if (event.target.value === 'planets' && !this.state.cardType) {
+  //     this.planetSearch();
+  //   } else {
+  //     this.pickedPlanets(event.target.value);
+  //   }
+  //   if (event.target.value === 'vehicles' && !this.state.cardType) {
+  //     this.vehicleSearch()
+  //   } else {
+  //     this.pickedVehicles(event.target.value);  
+  //   }
+  // }
 
   pickAsearch = (event) => {
-    if (event.target.value === 'people' && !this.state.cardType) {
+    if (event.target.value === 'people' && !this.state.cardType){
       this.peopleSearch();
-    } else {
-      this.pickedPeople(event.target.value);
-    }
-    if (event.target.value === 'planets' && !this.state.cardType) {
+    } else if (event.target.value === 'planets' && !this.state.cardType){
       this.planetSearch();
-    } else {
+    } else if (event.target.value === 'vehicles' && !this.state.cardType){
+      this.vehicleSearch();
+    } else if (event.target.value === 'people'){
+      this.pickedPeople(event.target.value);
+    } else if (event.target.value === 'planets'){
       this.pickedPlanets(event.target.value);
+    } else if (event.target.value === 'vehicles'){
+      this.pickedVehicles(event.target.value);
     }
-    if (event.target.value === 'vehicles' && !this.state.cardType) {
-      this.vehicleSearch()
+  }
+
+peopleSearch = async () => {
+  const charactersWithoutEverything = await fetchForPeople();
+  const charactersWithHomeworld =
+    await this.homeWorldSearch(charactersWithoutEverything);
+  const characters =
+    await this.speciesSearch(charactersWithHomeworld);
+  await this.setState({
+    characters,
+    cards: characters,
+    cardType: 'people'
+  });
+}
+
+speciesSearch = (characters) => {
+  const unresolvedPromises = characters.map(async character => {
+    const species = await fetchForSpecies(character.species[0]);
+    return { ...character, species };
+  });
+  return Promise.all(unresolvedPromises);
+}
+
+//use this homeWorldSearch as pattern
+homeWorldSearch = async (characters) => {
+  const unresolvedPromises = characters.map(async character => {
+    const homeworld = await fetchForHomeworld(character.homeworld);
+    return { ...character, homeworld };
+  });
+  return Promise.all(unresolvedPromises);
+}
+
+planetsClearner = (planets) => {
+  const cleanPlanets = planets.reduce((acc, planet) => {
+    if (!planet.residents.length) {
+      Object.assign({}, planet, { residents: 'no residents' });
+      acc.push(planet);
     } else {
-      this.pickedVehicles(event.target.value);  
+      acc.push(planet);
     }
-  }
+    return acc;
+  }, []);
+  return cleanPlanets;
+}
 
-  peopleSearch = async () => { 
-    const charactersWithoutEverything = await fetchForPeople();
-    const charactersWithHomeworld = 
-      await this.homeWorldSearch(charactersWithoutEverything);
-    const characters = 
-      await this.speciesSearch(charactersWithHomeworld);
-    await this.setState({
-      characters, 
-      cards: characters, 
-      cardType: 'people'
-    });  
-  }
+planetSearch = async () => {
+  const planetsWithoutEverything =
+    await fetchForPlanets();
+  const hydratedPlanets =
+    await this.residentsSearch(planetsWithoutEverything);
+  const cleanHydratedPlanets = this.planetsClearner(hydratedPlanets);
+  this.setState({
+    cardType: 'planets',
+    planets: cleanHydratedPlanets,
+    cards: cleanHydratedPlanets
+  });
+}
 
-  speciesSearch = (characters) => {
-    const unresolvedPromises = characters.map(async character => {
-      const species = await fetchForSpecies(character.species[0]);
-      return { ...character, species };
-    });
-    return Promise.all(unresolvedPromises);
-  }
+residentsSearch = async (planets) => {
+  let hydratedPlanets;
 
-  //use this homeWorldSearch as pattern
-  homeWorldSearch = async (characters) => {
-    const unresolvedPromises = characters.map(async character => {
-      const homeworld = await fetchForHomeworld(character.homeworld);
-      return { ...character, homeworld };
-    });
-    return Promise.all(unresolvedPromises);
-  }
+  const promiseOfHydratedPlanets = planets.map(async planet => {
+    const residentsOfPlanet = await getResidentsNames(planet);
+    const residents = await Promise.all(residentsOfPlanet);
+    return { ...planet, residents };
+  });
+  hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);
+  return hydratedPlanets;
+}
 
-  planetsClearner = (planets)=>{
-    const cleanPlanets = planets.reduce((acc, planet)=>{
-      if (!planet.residents.length) {
-        Object.assign({}, planet, {residents: 'no residents'});
-        acc.push(planet);
-      } else {
-        acc.push(planet);
-      }
-      return acc;
-    }, []); 
-    return cleanPlanets;
-  }
+vehicleSearch = async () => {
+  const vehicles = await fetchForVehicles();
+  await this.setState({ cardType: 'vehicles', vehicles, cards: vehicles });
+}
 
-  planetSearch = async () => {
-    const planetsWithoutEverything = 
-      await fetchForPlanets();
-    const hydratedPlanets = 
-      await this.residentsSearch(planetsWithoutEverything);
-    const cleanHydratedPlanets = this.planetsClearner(hydratedPlanets);
-    this.setState({
-      cardType:'planets', 
-      planets:cleanHydratedPlanets, 
-      cards:cleanHydratedPlanets 
-    });
-  }
+randomScrollForRefresh = async () => {
+  const movies = this.state.movies;
+  var randomMovieObject = movies[Math.floor(Math.random() * movies.length)];
+  await this.setState({
+    randomMovieObject:
+    {
+      openingCrawl: randomMovieObject.opening_crawl,
+      title: randomMovieObject.title,
+      date: randomMovieObject.release_date
+    }
+  });
+}
 
-  residentsSearch = async (planets) => {
-    let hydratedPlanets;
+async componentDidMount() {
+  const firstResponse = await firstFetch();
+  const movies = firstResponse.results;
+  await this.setState({ movies });
+  this.randomScrollForRefresh();
+}
 
-    const promiseOfHydratedPlanets = planets.map(async planet => {
-      const residentsOfPlanet = await getResidentsNames(planet);
-      const residents = await Promise.all(residentsOfPlanet);
-      return { ...planet, residents };
-    });
-    hydratedPlanets = await Promise.all(promiseOfHydratedPlanets);  
-    return hydratedPlanets;
-  }
-
-  vehicleSearch = async () => {
-    const vehicles = await fetchForVehicles();
-    await this.setState({ cardType: 'vehicles', vehicles, cards: vehicles}); 
-  }
-
-  randomScrollForRefresh = async () => {
-    const movies = this.state.movies;
-    var randomMovieObject = movies[Math.floor(Math.random() * movies.length)];
-    await this.setState({
-      randomMovieObject:
-      {
-        openingCrawl: randomMovieObject.opening_crawl,
-        title: randomMovieObject.title,
-        date: randomMovieObject.release_date
-      }
-    });
-  }
-
-  async componentDidMount() {
-    const firstResponse = await firstFetch();
-    const movies = firstResponse.results;
-    await this.setState({ movies });
-    this.randomScrollForRefresh();
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <ScrollContainer
-          className="scroll"
-          randomMovieObject={this.state.randomMovieObject} />
-        <h1
-          className="header">Star Wars</h1>
-        <div>
-          <input
-            type="button"
-            value='View Favorites'
-          />fave#
+render() {
+  return (
+    <div className="App">
+      <ScrollContainer
+        className="scroll"
+        randomMovieObject={this.state.randomMovieObject} />
+      <h1
+        className="header">Star Wars</h1>
+      <div>
+        <input
+          type="button"
+          value='View Favorites'
+        />fave#
         </div>
-        <ButtonContainer
-          className="button-container"
-          pickAsearch={this.pickAsearch}
-        />
-        <CardContainer
-          cardType={this.state.cardType}
-          cards={this.state.cards}
-          favorites={this.state.favorites}
-        />
-      </div>
-    );
-  }
+      <ButtonContainer
+        className="button-container"
+        pickAsearch={this.pickAsearch}
+      />
+      <CardContainer
+        cardType={this.state.cardType}
+        cards={this.state.cards}
+        favorites={this.state.favorites}
+      />
+    </div>
+  );
+}
 }
 
 export default App;
