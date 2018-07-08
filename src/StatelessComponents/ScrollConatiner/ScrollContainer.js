@@ -8,7 +8,7 @@ export const ScrollContainer = (props) => {
   return (
     <div className="board">
       <div className="content">
-        <p>{`${openingCrawl}`}</p>
+        <span>{`${openingCrawl}`}</span>
         <p>Title: {`${title}`} </p>
         <p>Date: {`${date}`}</p>
       </div>

@@ -1,12 +1,15 @@
-p {
-  color: #FFFF82;
+.board {
+  color: darkblue;
 }
 
+span {
+  color: darkblue;
+}
 
 .board {
   background-color: blue;
   font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-  transform: perspective(300px) rotateX(25deg);
+  transform: perspective(300px) rotateX(6deg);
   transform-origin: 50% 100%;
   text-align: justify;
   position: absolute;
@@ -14,10 +17,11 @@ p {
   font-weight: bold;
   overflow: hidden;
   font-size: 350%;
-  height: 50em;
+  height: 30em;
   width: 18em;
-  bottom: 0;
+  bottom: 40px;
   left: 50%;
+  z-index: -1;
 }
 
 
