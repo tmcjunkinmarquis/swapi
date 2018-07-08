@@ -4,15 +4,20 @@ import PropTypes from 'prop-types';
 
 const Card = (props) => {
   const { name } = props.card;
-  const { cardType } = props;
+  const { cardType, isFavorite, toggleFavorite } = props;
 
   const renderPeople = () => {
     return <div className="card">
-      <input
-        type="button"
-        value="faveOrNot ?"
-        className="btn active"
-      />
+    <div>
+        <input
+          type="button"
+          value="faveOrNot ?"
+          className="btn active"
+        />
+        {isFavorite}
+    </div>
+      
+      
       <p>{name}</p>  
       <p>{props.card.homeworld.population}</p>
       <p>{props.card.species.name}</p>
@@ -32,6 +37,7 @@ const Card = (props) => {
     };
     return <div className="card">
       <input
+        onClick={()=>props.toggleFavorite}
         type="button"
         value="faveOrNot ?"
         className="btn active"
@@ -47,8 +53,9 @@ const Card = (props) => {
   const renderVehicles = ()=>{
     return <div className="card">
       <input
+        onClick={()=>toggleFavorite}
         type="button"
-        value="faveOrNot ?"
+        value="NotFave"
         className="btn active"
       />
       <p>{name}</p>
@@ -69,7 +76,8 @@ const Card = (props) => {
 
 Card.propTypes = {
   card: PropTypes.object.isRequired,
-  cardType: PropTypes.string.isRequired 
+  cardType: PropTypes.string.isRequired,
+  toggleFavorite: PropTypes.func.isRequired
 };
 
 export default Card;

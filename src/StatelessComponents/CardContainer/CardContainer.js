@@ -3,13 +3,20 @@ import Card from '../Card/Card';
 import './CardContainer.css';
 import PropTypes from 'prop-types';
 
-const CardContainer = ({ cardType, cards, favorites }) => {
+const CardContainer = ({ cardType, cards, isFavorite, toggleFavorite }) => {
 
+  // const makeCards = ()=>{
+
+  //   console.log('happy container', cards);
+    
+  // }
+  
   const makeCards = cards.map((card, index) => {
     return <Card
+      toggleFavorite={toggleFavorite}
       cardType={cardType}
       card={card}
-      favorites={favorites}
+      isFavorite={isFavorite}
       key={cardType+index}
     />;
   });
@@ -22,9 +29,10 @@ const CardContainer = ({ cardType, cards, favorites }) => {
 };
 
 CardContainer.propTypes = {
-  cardType: PropTypes.string,
-  cards: PropTypes.array,
-  favorites: PropTypes.array
+  cardType: PropTypes.string.isRequired,
+  cards: PropTypes.array.isRequired,
+  favorites: PropTypes.array,
+  toggleFavorite: PropTypes.func.isRequired
 };
 CardContainer.defaultProps = { favorites: [] };
 

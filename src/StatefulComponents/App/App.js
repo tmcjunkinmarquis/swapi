@@ -20,6 +20,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      isFavorite: false,
       cardType: '',
       movies: [],
       randomMovieObject: {},
@@ -31,16 +32,22 @@ class App extends Component {
     };
   }
 
+  toggleFavorite = ()=>{
+    console.log('happy');
+    
+    this.setState({ isFavorite: !this.state.isFavorite });
+  }
+
   pickedPeople = (buttonType) => {
-    (this.state.cardType !== buttonType && this.state.characters.length)
-      && this.setState({ cardType: buttonType });
-    !this.state.characters.length && this.peopleSearch();
+    // (this.state.cardType !== buttonType && this.state.characters.length)
+      this.setState({ cardType: buttonType });
+    // !this.state.characters.length && this.peopleSearch();
   }
 
   pickedPlanets = (buttonType) => {
-    (this.state.cardType !== buttonType && this.state.planets.length)
-      && this.setState({ cardType: buttonType });
-    !this.state.planets.length && this.planetSearch();
+    // (this.state.cardType !== buttonType && this.state.planets.length)
+      this.setState({ cardType: buttonType });
+    // !this.state.planets.length && this.planetSearch();
   }
 
   pickedVehicles = async (buttonType) => {
@@ -67,20 +74,20 @@ class App extends Component {
   //   }
   // }
 
-  pickAsearch = (event) => {
-    if (event.target.value === 'people' && !this.state.cardType){
+  pickAsearch = async (event) => {
+    if (event.target.value === 'people' && this.state.cardType !== 'people' && this.state.characters.length === 0){
       this.peopleSearch();
-    } else if (event.target.value === 'planets' && !this.state.cardType){
+    } else if (event.target.value === 'planets' && this.state.cardType !== 'planets' && this.state.planets.length === 0){ //needs one more conditional
       this.planetSearch();
-    } else if (event.target.value === 'vehicles' && !this.state.cardType){
+    } else if (event.target.value === 'vehicles' && this.state.cardType !== 'vehicles' && this.state.vehicles.length === 0){
       this.vehicleSearch();
     } else if (event.target.value === 'people'){
-      this.pickedPeople(event.target.value);
+      this.setState({ cardType: 'people', cards: this.state.characters})
     } else if (event.target.value === 'planets'){
-      this.pickedPlanets(event.target.value);
+      this.setState({ cardType: 'planets', cards: this.state.planets})
     } else if (event.target.value === 'vehicles'){
-      this.pickedVehicles(event.target.value);
-    }
+      this.setState({ cardType: 'vehicles', cards: this.state.vehicles })
+    } 
   }
 
 peopleSearch = async () => {
@@ -89,7 +96,7 @@ peopleSearch = async () => {
     await this.homeWorldSearch(charactersWithoutEverything);
   const characters =
     await this.speciesSearch(charactersWithHomeworld);
-  await this.setState({
+  this.setState({
     characters,
     cards: characters,
     cardType: 'people'
@@ -195,9 +202,11 @@ render() {
         pickAsearch={this.pickAsearch}
       />
       <CardContainer
+        toggleFavorite={this.toggleFavorite}
         cardType={this.state.cardType}
         cards={this.state.cards}
         favorites={this.state.favorites}
+        isFavorite={this.state.isFavorite}
       />
     </div>
   );
