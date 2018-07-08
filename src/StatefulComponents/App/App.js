@@ -33,9 +33,11 @@ class App extends Component {
   }
 
   toggleFavorite = (id)=>{
-    const favorites = this.state.cards.filter((card)=>{
+    const favorited = this.state.cards.filter((card)=>{
+      // console.log(card);
       return card.id === id;
     });
+    this.setState({favorites: favorited}) 
   }
 
   pickAsearch = async (event) => {
@@ -63,7 +65,7 @@ peopleSearch = async () => {
   this.setState({
     characters,
     cards: characters,
-    cardType: 'people'
+    cardType: 'people',
   });
 }
 
@@ -84,11 +86,11 @@ homeWorldSearch = async (characters) => {
   return Promise.all(unresolvedPromises);
 }
 
-planetsClearner = (planets) => {
-  const cleanPlanets = planets.reduce((acc, planet) => {
+planetsCleaner = (planets) => {
+  const cleanPlanets = planets.reduce((acc, planet, index) => {
     if (!planet.residents.length) {
-      Object.assign({}, planet, { residents: 'no residents' });
-      acc.push(planet);
+      const newPlanet = Object.assign({}, planet, { residents: 'no residents' });
+      acc.push(newPlanet);
     } else {
       acc.push(planet);
     }
@@ -102,11 +104,14 @@ planetSearch = async () => {
     await fetchForPlanets();
   const hydratedPlanets =
     await this.residentsSearch(planetsWithoutEverything);
-  const cleanHydratedPlanets = this.planetsClearner(hydratedPlanets);
+  const cleanHydratedPlanets = this.planetsCleaner(hydratedPlanets);
+  const cleanHydPlanetsWithId = cleanHydratedPlanets.map((planet, index)=>{
+    return {...planet, id: `${planet.name} + ${index}`};
+  });
   this.setState({
     cardType: 'planets',
-    planets: cleanHydratedPlanets,
-    cards: cleanHydratedPlanets
+    planets: cleanHydPlanetsWithId,
+    cards: cleanHydPlanetsWithId
   });
 }
 
@@ -124,7 +129,15 @@ residentsSearch = async (planets) => {
 
 vehicleSearch = async () => {
   const vehicles = await fetchForVehicles();
-  await this.setState({ cardType: 'vehicles', vehicles, cards: vehicles });
+  const vehiclesWithId = await vehicles.map((vehicle, index)=>{
+    return { ...vehicle, id: `${vehicle.name} + ${index}`};
+  });
+  // console.log({vehiclesWithId});
+  
+  await this.setState({ 
+    cardType: 'vehicles', 
+    vehicles: vehiclesWithId, 
+    cards: vehiclesWithId});
 }
 
 randomScrollForRefresh = async () => {

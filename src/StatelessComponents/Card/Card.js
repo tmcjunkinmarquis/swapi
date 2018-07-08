@@ -39,7 +39,7 @@ const Card = (props) => {
     };
     return <div className="card">
       <input
-        onClick={()=>toggleFavorite}
+        onClick={() => toggleFavorite(id)}
         type="button"
         value="faveOrNot ?"
         className="btn active"
@@ -55,7 +55,7 @@ const Card = (props) => {
   const renderVehicles = ()=>{
     return <div className="card">
       <input
-        onClick={() => toggleFavorite}
+        onClick={()=>toggleFavorite(id)}
         type="button"
         value="NotFave"
         className="btn active"
