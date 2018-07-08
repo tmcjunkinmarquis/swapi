@@ -1,5 +1,6 @@
 import React from 'react';
 import './ScrollContainer.css';
+import PropTypes from 'prop-types';
 
 export const ScrollContainer = (props) => {
 
@@ -14,4 +15,7 @@ export const ScrollContainer = (props) => {
       </div>
     </div>
   );
+};
+ScrollContainer.propTypes = {
+  randomMovieObject: PropTypes.object.isRequired
 };

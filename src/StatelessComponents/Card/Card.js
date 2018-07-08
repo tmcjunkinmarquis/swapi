@@ -1,6 +1,6 @@
 import React from 'react';
 import './Card.css';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 const Card = (props) => {
   const { name } = props.card;
@@ -57,7 +57,7 @@ const Card = (props) => {
       <p>{props.card.model}</p>
       <p>{props.card.passengers}</p>
       <p>{props.card.vehicle_class}</p>
-    </div>
+    </div>;
   };
 
   return (
@@ -73,6 +73,5 @@ Card.propTypes = {
   card: PropTypes.object.isRequired,
   cardType: PropTypes.string.isRequired 
 };
-
 
 export default Card;

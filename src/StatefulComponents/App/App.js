@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
-import { ButtonContainer } from '../../StatelessComponents/ButtonContainer/ButtonContainer';
-import { ScrollContainer } from '../../StatelessComponents/ScrollConatiner/ScrollContainer';
-import { firstFetch, fetchForPeople, fetchForHomeworld, fetchForSpecies, fetchForPlanets, getResidentsNames, fetchForVehicles } from '../../ApiCall/ApiCall';
-// import { searchForPeople, searchForPlanets, searchForVehicles } from './ButtonSearhingHelper';
-import CardContainer from '../../StatelessComponents/CardContainer/CardContainer';
+import { ButtonContainer } from 
+  '../../StatelessComponents/ButtonContainer/ButtonContainer';
+import { ScrollContainer } from 
+  '../../StatelessComponents/ScrollConatiner/ScrollContainer';
+import { 
+  firstFetch, 
+  fetchForPeople, 
+  fetchForHomeworld, 
+  fetchForSpecies, 
+  fetchForPlanets, 
+  getResidentsNames, 
+  fetchForVehicles } from '../../ApiCall/ApiCall';
+import CardContainer from 
+  '../../StatelessComponents/CardContainer/CardContainer';
 
 
 import './App.css';
@@ -63,9 +72,11 @@ class App extends Component {
 
   peopleSearch = async () => { 
     const charactersWithoutEverything = await fetchForPeople();
-    const charactersWithHomeworld = await this.homeWorldSearch(charactersWithoutEverything);
-    const characters = await this.speciesSearch(charactersWithHomeworld);
-    await this.setState({ characters, cards: characters, cardType: 'people' });  
+    const charactersWithHomeworld = 
+      await this.homeWorldSearch(charactersWithoutEverything);
+    const characters = 
+      await this.speciesSearch(charactersWithHomeworld);
+    await this.setState({characters, cards: characters, cardType: 'people'});  
   }
 
   speciesSearch = (characters) => {
@@ -88,22 +99,28 @@ class App extends Component {
   planetsClearner = (planets)=>{
     const cleanPlanets = planets.reduce((acc, planet)=>{
       if (!planet.residents.length) {
-        Object.assign({}, planet, {residents: 'no residents'})
-        acc.push(planet)
+        Object.assign({}, planet, {residents: 'no residents'});
+        acc.push(planet);
       } else {
-        acc.push(planet)
+        acc.push(planet);
       }
-      return acc
-    },[]);
+      return acc;
+    }, []);
     
     return cleanPlanets;
   }
 
   planetSearch = async () => {
-    const planetsWithoutEverything = await fetchForPlanets();//array of 10 planets
-    const hydratedPlanets = await this.residentsSearch(planetsWithoutEverything);
+    const planetsWithoutEverything = 
+      await fetchForPlanets();//array of 10 planets
+    const hydratedPlanets = 
+      await this.residentsSearch(planetsWithoutEverything);
     const cleanHydratedPlanets = this.planetsClearner(hydratedPlanets);
-    this.setState({ cardType: 'planets', planets: cleanHydratedPlanets, cards: cleanHydratedPlanets });
+    this.setState({
+      cardType:'planets', 
+      planets:cleanHydratedPlanets, 
+      cards:cleanHydratedPlanets 
+    });
   }
 
   residentsSearch = async (planets) => {

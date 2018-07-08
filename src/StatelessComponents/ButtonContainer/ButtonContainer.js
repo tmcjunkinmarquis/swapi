@@ -1,9 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const ButtonContainer = (props) => {
   const { pickAsearch } = props;
-
-
 
   return (
     <div>
@@ -24,4 +23,7 @@ export const ButtonContainer = (props) => {
       />
     </div>
   );
+};
+ButtonContainer.propTypes = {
+  pickAsearch: PropTypes.func.isRequired
 };
