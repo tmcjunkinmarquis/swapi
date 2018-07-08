@@ -76,7 +76,11 @@ class App extends Component {
       await this.homeWorldSearch(charactersWithoutEverything);
     const characters = 
       await this.speciesSearch(charactersWithHomeworld);
-    await this.setState({characters, cards: characters, cardType: 'people'});  
+    await this.setState({
+      characters, 
+      cards: characters, 
+      cardType: 'people'
+    });  
   }
 
   speciesSearch = (characters) => {
