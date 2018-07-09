@@ -5,12 +5,6 @@ import PropTypes from 'prop-types';
 
 const CardContainer = ({ cardType, cards, isFavorite, toggleFavorite }) => {
 
-  // const makeCards = ()=>{
-
-  //   console.log('happy container', cards);
-    
-  // }
-  
   const makeCards = cards.map((card, index) => {
     return <Card
       toggleFavorite={toggleFavorite}

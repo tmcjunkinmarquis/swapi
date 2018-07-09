@@ -21,8 +21,10 @@ class App extends Component {
     super();
     this.state = {
       // isFavorite: false,
+      duplicate: [],
       cardType: '',
       movies: [],
+      favoritesLength: 0,
       randomMovieObject: {},
       favorites: [],
       cards: [],
@@ -32,42 +34,74 @@ class App extends Component {
     };
   }
   
-  toggleFavorite = (id)=> {
-    const oldFaves = this.state.favorites;
 
-    const card = this.state.cards.filter(card => {
-      return card.id === id;
-    });
-    
-    let duplicate = oldFaves.filter((favorite) => {
-      return favorite.name === card.name;
-    });
-    
-    const removeFave = (card)=>{
-      const newFaves = oldFaves.filter((fave) => {
-        duplicate.pop()
-        return fave.id !== card.id; //takes it out
-      });
-      this.setState({favorites: newFaves});
-    };
-    
-    const addFave = (card)=>{
-      let newFaves = oldFaves;
-      newFaves.push(card);
-      
-      newFaves.flat();
-      this.setState({ favorites: newFaves });
-    };
-    
-    if (!duplicate.length){
-      addFave(card);
-    } else {
-      card[0]= duplicate[0];
-      removeFave(card[0]);
-    } 
+  toggleDisplayFavorites = () => {
+    this.setState({ card: this.state.favorites });
+  }
+
+  addFave = (card) => {
+    console.log(card);
+    let favoritesLength = this.state.favoritesLength;
+    let newFavesLength = favoritesLength +=1;
+    const newFavorites = [...this.state.favorites, card];
+
+    this.setState({ favorites: newFavorites, favoritesLength:newFavesLength });
+  };
+
+  removeFave = (card)=>{
+    let favoritesLength = this.state.favoritesLength;
+    let newFavesLength = favoritesLength;
+    const favorites = this.state.favorites;
+    const index = favorites.findIndex(favorite => favorite.id === card.id);
+    favorites.splice(index, 1);
+    this.setState({ favorites, favoritesLength: newFavesLength}) 
   }
   
-  
+
+  toggleFavorite = (id)=>{
+    
+    const oldFavorites = this.state.favorites;
+    
+    const singleCardArr = this.state.cards.filter((card)=>{
+      return card.id === id
+    })
+    oldFavorites.unshift(singleCardArr[0])
+    
+    let duplicateArr = oldFavorites.filter((oldFave)=>{
+      return oldFave === singleCardArr[0]
+    })
+    
+    
+    if(duplicateArr.length === 2){
+      
+      this.removeFave(singleCardArr[0])
+    } else {
+      this.addFave(singleCardArr[0])
+    }
+
+    
+    
+    
+    
+    
+    
+
+    
+    
+    // console.log('before:',this.state.duplicate);
+    // this.setState({duplicate: newDuplicate});
+    // console.log('after:',this.state.duplicate);
+
+
+    // if (duplicate) {
+      
+    //   this.removeFave(duplicate)
+    // } else {
+    //   console.log('should add')
+    //   this.addFave(duplicate)
+    // }
+  }
+    
   pickAsearch = async (event) => {
     if (event.target.value === 'people' && this.state.cardType !== 'people' && this.state.characters.length === 0){
       this.peopleSearch();

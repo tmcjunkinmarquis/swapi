@@ -13,7 +13,7 @@ const Card = (props) => {
         <input
           onClick={()=>toggleFavorite(id)}
           type="button"
-          value="favorites"
+          value="Fave Or Not ?"
           className="btn active"
         />
         {isFavorite}
@@ -42,7 +42,7 @@ const Card = (props) => {
       <input
         onClick={() => toggleFavorite(id)}
         type="button"
-        value="faveOrNot ?"
+        value="Fave Or Not ?"
         className="btn active"
       />
       <p>{name}</p>
@@ -58,7 +58,7 @@ const Card = (props) => {
       <input
         onClick={()=>toggleFavorite(id)}
         type="button"
-        value="NotFave"
+        value="Fave Or Not ?"
         className="btn active"
       />
       <p>{name}</p>
