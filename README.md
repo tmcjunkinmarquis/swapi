@@ -32,7 +32,6 @@ npm install
 npm start
 ```
 
-
 ## Built With 
 
 * React
