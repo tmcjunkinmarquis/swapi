@@ -38,31 +38,35 @@ class App extends Component {
     const card = this.state.cards.filter(card => {
       return card.id === id;
     });
-
-    let duplicate = this.state.favorites.find((favorite) => {
-      return favorite.id === id;
+    
+    let duplicate = oldFaves.filter((favorite) => {
+      return favorite.name === card.name;
     });
-
+    
     const removeFave = (card)=>{
       const newFaves = oldFaves.filter((fave) => {
+        duplicate.pop()
         return fave.id !== card.id; //takes it out
       });
       this.setState({favorites: newFaves});
     };
-
+    
     const addFave = (card)=>{
       let newFaves = oldFaves;
       newFaves.push(card);
+      
       newFaves.flat();
       this.setState({ favorites: newFaves });
     };
     
-    if (duplicate){
-      removeFave(card);
-    } else {
+    if (!duplicate.length){
       addFave(card);
+    } else {
+      card[0]= duplicate[0];
+      removeFave(card[0]);
     } 
   }
+  
   
   pickAsearch = async (event) => {
     if (event.target.value === 'people' && this.state.cardType !== 'people' && this.state.characters.length === 0){
@@ -197,7 +201,7 @@ render() {
           value='View Favorites'
           onClick={(event)=>this.pickAsearch(event)}
         />fave#
-        </div>
+      </div>
       <ButtonContainer
         className="button-container"
         pickAsearch={this.pickAsearch}
