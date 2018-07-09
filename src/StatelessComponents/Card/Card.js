@@ -4,23 +4,22 @@ import PropTypes from 'prop-types';
 
 const Card = (props) => {
   const { name, id } = props.card;
-  const { cardType, isFavorite, toggleFavorite} = props;
+  const { cardType, toggleFavorite } = props;
 
 
   const renderPeople = () => {
     return <div className="card">
-    <div>
+      <div>
         <input
-          onClick={()=>toggleFavorite(id)}
+          onClick={() => toggleFavorite(id)}
           type="button"
           value="Fave Or Not ?"
           className="btn active"
         />
-        {isFavorite}
-    </div>
-      
-      
-      <p>{name}</p>  
+      </div>
+
+
+      <p>{name}</p>
       <p>{props.card.homeworld.population}</p>
       <p>{props.card.species.name}</p>
       <p>{props.card.species.language}</p>
@@ -35,7 +34,7 @@ const Card = (props) => {
           key={`${resident.name}+${index}`}
         >
           {resident.name}
-        </p>;    
+        </p>;
       });
     };
     return <div className="card">
@@ -49,14 +48,14 @@ const Card = (props) => {
       <p>{props.card.terrain}</p>
       <p>{props.card.population}</p>
       <p>{props.card.climate}</p>
-      {renderResidents(props.card.residents)}    
+      {renderResidents(props.card.residents)}
     </div>;
   };
 
-  const renderVehicles = ()=>{
+  const renderVehicles = () => {
     return <div className="card">
       <input
-        onClick={()=>toggleFavorite(id)}
+        onClick={() => toggleFavorite(id)}
         type="button"
         value="Fave Or Not ?"
         className="btn active"

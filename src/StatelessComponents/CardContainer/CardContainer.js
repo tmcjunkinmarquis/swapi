@@ -3,14 +3,13 @@ import Card from '../Card/Card';
 import './CardContainer.css';
 import PropTypes from 'prop-types';
 
-const CardContainer = ({ cardType, cards, isFavorite, toggleFavorite }) => {
+const CardContainer = ({ cardType, cards, toggleFavorite }) => {
 
   const makeCards = cards.map((card, index) => {
     return <Card
       toggleFavorite={toggleFavorite}
       cardType={cardType}
       card={card}
-      isFavorite={isFavorite}
       key={cardType+index}
     />;
   });
