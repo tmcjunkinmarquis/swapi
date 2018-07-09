@@ -44,7 +44,7 @@ class App extends Component {
     this.setState({ favorites: newFavorites, favoritesLength: newFavesLength });
   };
 
-  deleteFave = (arr) =>{
+  deleteFave = (arr) => {
     let favoritesLength = this.state.favoritesLength;
     let newFavesLength = favoritesLength -= 1;
     const newFavorites = [...arr];
@@ -58,11 +58,11 @@ class App extends Component {
       return card.id === id;
     });
 
-    if( !oldFavorites.find(fave=>fave.id === id)){
+    if (!oldFavorites.find(fave => fave.id === id)) {
       oldFavorites = [...this.state.favorites, singleCardArr[0]];
       this.addFave(oldFavorites)
     } else {
-      oldFavorites = oldFavorites.filter((fave)=>{
+      oldFavorites = oldFavorites.filter((fave) => {
         return fave.id !== id
       })
       this.deleteFave(oldFavorites)
@@ -70,18 +70,20 @@ class App extends Component {
   }
 
   pickAsearch = async (event) => {
-    if (event.target.value === 'people' 
-      && this.state.cardType !== 'people' 
+    if (event.target.value === 'people'
+      && this.state.cardType !== 'people'
       && this.state.characters.length === 0) {
       this.peopleSearch();
-    } else if (event.target.value === 'planets' 
-      && this.state.cardType !== 'planets' 
+    } else if (event.target.value === 'planets'
+      && this.state.cardType !== 'planets'
       && this.state.planets.length === 0) {
       this.planetSearch();
-    } else if (event.target.value === 'vehicles' 
-      && this.state.cardType !== 'vehicles' 
+    } else if (event.target.value === 'vehicles'
+      && this.state.cardType !== 'vehicles'
       && this.state.vehicles.length === 0) {
       this.vehicleSearch();
+    } else if (event.target.value === 'View Favorites' && this.state.cardType !== 'View Favorites' ) {
+      this.setState({ cards: this.state.favorites })
     } else if (event.target.value === 'people') {
       this.setState({ cardType: 'people', cards: this.state.characters });
     } else if (event.target.value === 'planets') {
@@ -124,7 +126,7 @@ class App extends Component {
   planetsCleaner = (planets) => {
     const cleanPlanets = planets.reduce((acc, planet) => {
       if (!planet.residents.length) {
-        const newPlanet = 
+        const newPlanet =
           Object.assign({}, planet, { residents: [{ name: 'no residents' }] });
         acc.push(newPlanet);
       } else {
@@ -199,15 +201,16 @@ class App extends Component {
       <div className="App">
         <ScrollContainer
           className="scroll"
-          randomMovieObject={this.state.randomMovieObject} />
+          randomMovieObject={this.state.randomMovieObject}
+        />
         <h1
           className="header">Star Wars</h1>
         <div>
           <input
             type="button"
             value='View Favorites'
-            onClick={(event) => this.pickAsearch(event)}
-          />fave#
+            onClick={(event)=>this.pickAsearch(event)}
+          />{this.state.favoritesLength}
         </div>
         <ButtonContainer
           className="button-container"
