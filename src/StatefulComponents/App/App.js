@@ -37,27 +37,35 @@ class App extends Component {
     this.setState({ card: this.state.favorites });
   }
 
-  addFave = (card) => {
+  addFave = (arr) => {
     let favoritesLength = this.state.favoritesLength;
     let newFavesLength = favoritesLength += 1;
-    const newFavorites = [...this.state.favorites, card];
+    const newFavorites = [...arr];
     this.setState({ favorites: newFavorites, favoritesLength: newFavesLength });
   };
 
+  deleteFave = (arr) =>{
+    let favoritesLength = this.state.favoritesLength;
+    let newFavesLength = favoritesLength -= 1;
+    const newFavorites = [...arr];
+    this.setState({ favorites: newFavorites, favoritesLength: newFavesLength })
+  }
+
   toggleFavorite = (id) => {
-    const oldFavorites = this.state.favorites;
+    let oldFavorites = [...this.state.favorites];
+
     const singleCardArr = this.state.cards.filter((card) => {
       return card.id === id;
     });
-    oldFavorites.unshift(singleCardArr[0]);
-    let duplicateArr = oldFavorites.filter((oldFave) => {
-      return oldFave === singleCardArr[0];
-    });
 
-    if (duplicateArr.length === 2) {
-      this.removeFave(singleCardArr[0]); //to come
+    if( !oldFavorites.find(fave=>fave.id === id)){
+      oldFavorites = [...this.state.favorites, singleCardArr[0]];
+      this.addFave(oldFavorites)
     } else {
-      this.addFave(singleCardArr[0]);
+      oldFavorites = oldFavorites.filter((fave)=>{
+        return fave.id !== id
+      })
+      this.deleteFave(oldFavorites)
     }
   }
 
