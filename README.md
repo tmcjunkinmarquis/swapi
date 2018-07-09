@@ -1,4 +1,4 @@
-[UI image](<img src="./images/ScreenShot.png"/>)
+[UI image](<img src="./src/images/ScreenShot.png"/>)
 
 # swapi
 
