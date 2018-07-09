@@ -1,0 +1,9 @@
+.card-container {
+  height: 30%;
+  width: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  opacity: 0.7;
+  
+}
