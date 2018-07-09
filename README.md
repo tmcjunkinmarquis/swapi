@@ -32,7 +32,6 @@ npm install
 npm start
 ```
 
-
 ## Built With 
 
 * React
@@ -42,4 +41,5 @@ npm start
 ## Authors
 
 * **Theresa Marquis** - *Initial work* - [(https://github.com/tmcjunkinmarquis)]
+
 
