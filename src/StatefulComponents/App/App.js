@@ -31,14 +31,39 @@ class App extends Component {
       vehicles: []
     };
   }
+  
+  toggleFavorite = (id)=> {
+    const oldFaves = this.state.favorites;
 
-  toggleFavorite = (id)=>{
-    const favorited = this.state.cards.filter((card)=>{
+    const card = this.state.cards.filter(card => {
       return card.id === id;
     });
-    this.setState({favorites: favorited}) 
-  }
 
+    let duplicate = this.state.favorites.find((favorite) => {
+      return favorite.id === id;
+    });
+
+    const removeFave = (card)=>{
+      const newFaves = oldFaves.filter((fave) => {
+        return fave.id !== card.id; //takes it out
+      });
+      this.setState({favorites: newFaves});
+    };
+
+    const addFave = (card)=>{
+      let newFaves = oldFaves;
+      newFaves.push(card);
+      newFaves.flat();
+      this.setState({ favorites: newFaves });
+    };
+    
+    if (duplicate){
+      removeFave(card);
+    } else {
+      addFave(card);
+    } 
+  }
+  
   pickAsearch = async (event) => {
     if (event.target.value === 'people' && this.state.cardType !== 'people' && this.state.characters.length === 0){
       this.peopleSearch();
