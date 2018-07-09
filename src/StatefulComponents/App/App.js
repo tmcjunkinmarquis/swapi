@@ -44,6 +44,13 @@ class App extends Component {
     this.setState({ favorites: newFavorites, favoritesLength: newFavesLength });
   };
 
+  deleteFave = (arr) =>{
+    let favoritesLength = this.state.favoritesLength;
+    let newFavesLength = favoritesLength -= 1;
+    const newFavorites = [...arr];
+    this.setState({ favorites: newFavorites, favoritesLength: newFavesLength })
+  }
+
   toggleFavorite = (id) => {
     let oldFavorites = [...this.state.favorites];
 
@@ -54,23 +61,12 @@ class App extends Component {
     if( !oldFavorites.find(fave=>fave.id === id)){
       oldFavorites = [...this.state.favorites, singleCardArr[0]];
       this.addFave(oldFavorites)
-    }else{}
-
-    // console.log(oldFavorites, singleCardArr);
-    
-    // const singleCardArr = this.state.cards.filter((card) => {
-    //   return card.id === id;
-    // });
-    // oldFavorites.unshift(singleCardArr[0]);
-    // let duplicateArr = oldFavorites.filter((oldFave) => {
-    //   return oldFave === singleCardArr[0];
-    // });
-
-    // if (duplicateArr.length === 2) {
-    //   this.removeFave(singleCardArr[0]); //to come
-    // } else {
-    //   this.addFave(singleCardArr[0]);
-    // }
+    } else {
+      oldFavorites = oldFavorites.filter((fave)=>{
+        return fave.id !== id
+      })
+      this.deleteFave(oldFavorites)
+    }
   }
 
   pickAsearch = async (event) => {
